@@ -19,7 +19,9 @@ intents = discord.Intents.default()
 intents.messages = True
 intents.guilds = True
 intents.reactions = True
-intents.members = True
+intents.members = True  # Required for member joins
+intents.presences = True  # Required for presence updates
+
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 # Chat using OpenAI API
@@ -53,11 +55,13 @@ async def poll(ctx, question: str, *options):
     reactions = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣']
     
     for i, option in enumerate(options):
+        if i >= len(reactions):
+            break  # Prevents errors if more than 5 options are given
         description += f"{reactions[i]} {option}\n"
     embed.description = description
     
     message = await ctx.send(embed=embed)
-    for i in range(len(options)):
+    for i in range(min(len(options), len(reactions))):
         await message.add_reaction(reactions[i])
 
 # Music system
@@ -85,4 +89,5 @@ async def on_member_join(member):
         await channel.send(f"Welcome {member.mention} to the server!")
 
 # Run the bot
-bot.run(DISCORD_BOT_TOKEN)
+if __name__ == "__main__":
+    bot.run(DISCORD_BOT_TOKEN)
