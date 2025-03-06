@@ -21,6 +21,7 @@ intents.guilds = True
 intents.reactions = True
 intents.members = True  # Required for member joins
 intents.presences = True  # Required for presence updates
+intents.message_content = True  # Required for reading message content
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
