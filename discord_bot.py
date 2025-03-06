@@ -8,8 +8,11 @@ from dotenv import load_dotenv  # Load environment variables
 
 # Load environment variables
 load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
+
+if not OPENAI_API_KEY or not DISCORD_BOT_TOKEN:
+    raise ValueError("Missing API keys! Please check your .env file.")
 
 # Intents and bot setup
 intents = discord.Intents.default()
